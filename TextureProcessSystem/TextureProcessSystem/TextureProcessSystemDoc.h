@@ -125,6 +125,7 @@ public:
 	virtual ~CTextureProcessSystemDoc();
 
 	BOOL OnOpenDocument(LPCTSTR lpszPathName);
+	BOOL OnSaveDocument(LPCTSTR lpszPathName);
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;

@@ -119,8 +119,8 @@ class Model_PLY
 {
 public:
 	bool Model_PLY::Load(string filename);
-	void Model_PLY::writeMesh(char *filename);
-	void Model_PLY::writeMeshPLYT(char * filename);
+	void Model_PLY::writeMesh(const char *filename);
+	void Model_PLY::writeMeshPLYT(const char * filename);
 	void Model_PLY::Draw();
 	float* Model_PLY::calculateNormal(float *coord1, float *coord2, float *coord3);
 	Model_PLY();
@@ -129,7 +129,8 @@ public:
 	vector<gl_face> faceArry;
 	vector<gl_point> pointArry;
 	vector<gl_point2d> point2DArry;
-
+	bool typeisPLYT ;
+	string m_filename;
 	float* Faces_Triangles;
 	float* Faces_Quads;
 	float* Vertex_Buffer;

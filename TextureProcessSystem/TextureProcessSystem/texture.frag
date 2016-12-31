@@ -1,4 +1,4 @@
-#version 330
+ #version 330
 uniform sampler2D texs[55];
 uniform vec4 diffuse;
 in vec4 positionV;
@@ -92,20 +92,20 @@ void main() {
 			}
 		}
 		vec4 color=texture2D(texs[j], texCoordVS[i]);
-		if((color[0]==0)&&(color[1]==0)&&(color[2]==0))
+		if((color[0]>0.7)&&(color[1]>0.7)&&(color[2]>0.7)&&(i!=0))
 		{
-			if(j==0)
-			{colorOut=color*0.9;
-			colorOut-=vec4(0.3,0.3,0.3,0);}
+			//colorOut=color*0.9;
+			//colorOut-=vec4(0.3,0.3,0.3,0);
 		}else
 		{
 			colorOut=color*0.9;
 			colorOut-=vec4(0.3,0.3,0.3,0);
 			
 		}
-		
-	}	
-	colorOut+=(texture2D(texs[0], texCoordVS[0]))*0.1;
+		//colorOut=color*0.9;
+	}
+	
+	//colorOut+=(texture2D(texs[0], texCoordVS[0]));
 	float power=1;
 	power=max(dot((diffuse-positionV),normalsV),0);
 	colorOut=vec4(0.1,0.1,0.1,1)*power+colorOut;

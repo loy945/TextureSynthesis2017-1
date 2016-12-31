@@ -95,7 +95,10 @@ void DistanceRecord::init(Model_PLY * plyModel)
 		this->m_triangleFaceArry.push_back(*tempTF);
 	}
 	bool read=false;
-	read = readFromFile("DistanceRecord.log");
+	string srcFileName=m_plyModel->m_filename;
+	string drFileName = srcFileName + ".dr";
+	read = readFromFile(drFileName.c_str());
+	//read = readFromFile("DistanceRecord.log");
 	if (!read)
 	{
 		for (int i = 0; i < m_triangleFaceArry.size(); i++)
@@ -103,7 +106,8 @@ void DistanceRecord::init(Model_PLY * plyModel)
 			buildNeighbourTriangleIndex(m_triangleFaceArry[i].facenum);
 		}
 		buildDistanceData();
-		outputToFile("DistanceRecord.log");
+		//outputToFile("DistanceRecord.log");
+		outputToFile(drFileName.c_str());
 	}
 }
 bool DistanceRecord::outputToFile(const char * fileName)
@@ -124,6 +128,10 @@ bool DistanceRecord::outputToFile(const char * fileName)
 bool DistanceRecord::readFromFile(const char * fileName)
 {
 	fstream f(fileName);
+	if (!f.is_open())
+	{
+		return false;
+	}
 	for (int i = 0; i < m_plyModel->faceArry.size(); i++)
 	{
 		TriangleFace * face1 = &m_triangleFaceArry[i];

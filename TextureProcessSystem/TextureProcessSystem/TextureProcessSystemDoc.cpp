@@ -116,6 +116,17 @@ bool CTextureProcessSystemDoc::loadDataFromObj()
 	
 	return true;
 }
+BOOL CTextureProcessSystemDoc::OnSaveDocument(LPCTSTR lpszPathName)
+{
+	if (plyLoader.faceArry.size()>0)
+	{
+		CString filename = lpszPathName;
+		string _t_filename = filename.GetBuffer();
+		plyLoader.writeMeshPLYT(_t_filename.c_str());
+		return true;
+	}
+	return true;
+}
 BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模型文件 2014.8.11
 {
 	if (lpszPathName != NULL)
@@ -129,6 +140,8 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 
 			return FALSE;
 		}
+		if (!plyLoader.typeisPLYT)
+		{
 		//修正plyLoader
 		vector<pair<Point3D, int>> points;
 		vector<pair<int, int>> dualPoints;
@@ -189,7 +202,8 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 		{
 			plyLoader.pointArry.at(dualPoints.at(a).second).pointNum = -1;
 		}
-			//计算法线
+		}
+		//计算法线
 		float A[3],B[3],C[3];
 		float x1,x2,x3,y1,y2,y3,z1,z2,z3;
 		vector<gl_face>  * Triangle=&(plyLoader.faceArry);

@@ -12,7 +12,7 @@ Model_PLY::Model_PLY()
 	Vertex_Buffer = NULL;
 	Normals = NULL;
 	showPart=1;
-
+	typeisPLYT = false;
 }
 
 Model_PLY::~Model_PLY()
@@ -71,7 +71,7 @@ float* Model_PLY::calculateNormal(float *coord1, float *coord2, float *coord3)
 
 	return norm;
 }
-void Model_PLY::writeMesh(char *filename){
+void Model_PLY::writeMesh(const char *filename){
 	int i = 0;
 	FILE *out = fopen(filename, "w");
 	fprintf(out, "%d\n", this->pointArry.size());
@@ -83,40 +83,49 @@ void Model_PLY::writeMesh(char *filename){
 		fprintf(out, "3 %d %d %d\n", faceArry[i].ptnum[0], faceArry[i].ptnum[1], faceArry[i].ptnum[2]);
 	fclose(out);
 }
-void Model_PLY::writeMeshPLYT(char *filename)
+void Model_PLY::writeMeshPLYT(const char *filename)
 {
 	int i = 0;
 	FILE *out = fopen(filename, "w");
-	fprintf(out, "%d\n", this->pointArry.size());
-	fprintf(out, "%d\n", this->faceArry.size());
+	fprintf(out, "ply\nformat ascii 1.0\ncomment zipper output\n");
+	fprintf(out, "element vertex %d\n", this->pointArry.size());
+	fprintf(out, "property float x\nproperty float y\nproperty float z\n");
+	fprintf(out, "element face %d\n", this->faceArry.size());
+	fprintf(out, "property list uint8 int32 vertex_indices\nproperty int32 feature_id\nproperty list uint8 float32 patch_s0\nproperty list uint8 float32 patch_t0\n");
+	fprintf(out, "property list uint8 float32 patch_s1\nproperty list uint8 float32 patch_t1\nproperty list uint8 float32 patch_s2\nproperty list uint8 float32 patch_t2\nend_header\n");
 	for (i = 0; i<this->pointArry.size(); i++){
 		fprintf(out, "%lf %lf %lf\n", pointArry[i].x, pointArry[i].y, pointArry[i].z);
 	}
 	for (i = 0; i < this->faceArry.size(); i++){
 		gl_face face = faceArry.at(i);
-			fprintf(out,  "%i%i%i%i%i%f%i%f%i%f%i%f%i%f%i%f", face.ptnum[0], face.ptnum[1], face.ptnum[2],
-			face.UVatlas_part,
-			"1", &face.texCoord.cor[0][0],
-			"1", &face.texCoord.cor[0][1],
-			"1", &face.texCoord.cor[1][0],
-			"1", &face.texCoord.cor[1][1],
-			"1", &face.texCoord.cor[2][0],
-			"1", &face.texCoord.cor[2][1]);
+		fprintf(out, "3 %i %i %i %i ", face.ptnum[0], face.ptnum[1], face.ptnum[2],face.UVatlas_part);
+		fprintf(out, "1  %f ", face.texCoords[0]->cor[0][0]);
+		fprintf(out, "1  %f ", face.texCoords[0]->cor[0][1]);
+		fprintf(out, "1  %f ", face.texCoords[0]->cor[1][0]);
+		fprintf(out, "1  %f ", face.texCoords[0]->cor[1][1]);
+		fprintf(out, "1  %f ", face.texCoords[0]->cor[2][0]);
+		fprintf(out, "1  %f\n", face.texCoords[0]->cor[2][1]);
 	}
 		
 	fclose(out);
 }
 bool Model_PLY::Load(string filename)
 {
+	this->m_filename = filename;
 	this->TotalConnectedTriangles = 0;
 	this->TotalConnectedQuads = 0;
 	this->TotalConnectedPoints = 0;
 
 
-	if (filename.length() > 0)
+	if (filename.length() > 4)
 	{
 		FILE* file = fopen(filename.c_str(), "r");
-
+		int fileNameSize = filename.size();
+		string fileType = filename.assign(filename,fileNameSize - 5, fileNameSize);
+		if (fileType == ".plyt" || fileType == ".PLYT")
+		{
+			typeisPLYT = true;
+		}
 		fseek(file, 0, SEEK_END);
 		long fileSize = ftell(file);
 
