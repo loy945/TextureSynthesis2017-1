@@ -213,12 +213,12 @@ BOOL CTextureProcessSystemDoc::OnOpenDocument(LPCTSTR lpszPathName)//打开模�
 			A[0] = plyLoader.pointArry[Triangle->at(i).ptnum[0]].x;
 			A[1] = plyLoader.pointArry[Triangle->at(i).ptnum[0]].y;
 			A[2] = plyLoader.pointArry[Triangle->at(i).ptnum[0]].z;
-			B[0] = plyLoader.pointArry[Triangle->at(i).ptnum[2]].x;
-			B[1] = plyLoader.pointArry[Triangle->at(i).ptnum[2]].y;
-			B[2] = plyLoader.pointArry[Triangle->at(i).ptnum[2]].z;
-			C[0] = plyLoader.pointArry[Triangle->at(i).ptnum[1]].x;
-			C[1] = plyLoader.pointArry[Triangle->at(i).ptnum[1]].y;
-			C[2] = plyLoader.pointArry[Triangle->at(i).ptnum[1]].z;
+			B[0] = plyLoader.pointArry[Triangle->at(i).ptnum[1]].x;
+			B[1] = plyLoader.pointArry[Triangle->at(i).ptnum[1]].y;
+			B[2] = plyLoader.pointArry[Triangle->at(i).ptnum[1]].z;
+			C[0] = plyLoader.pointArry[Triangle->at(i).ptnum[2]].x;
+			C[1] = plyLoader.pointArry[Triangle->at(i).ptnum[2]].y;
+			C[2] = plyLoader.pointArry[Triangle->at(i).ptnum[2]].z;
 			x1 = A[0]; y1 = A[1]; z1 = A[2];
 			x2 = B[0]; y2 = B[1]; z2 = B[2];
 			x3 = C[0]; y3 = C[1]; z3 = C[2];

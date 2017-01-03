@@ -1,2 +1,2 @@
-element nums:572
-cost time:0 minutes 0 seconds0 milliseconds
+element nums:16
+cost time:0 minutes 0 seconds297 milliseconds

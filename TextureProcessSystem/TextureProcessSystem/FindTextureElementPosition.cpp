@@ -261,7 +261,7 @@ void FindTextureElementPosition::draw()
 		//{
 		//	continue;
 		//}
-		if (m_targetTexture->tes[i]->n[2]>0)
+		if (m_targetTexture->tes[i]->n[2]<0)
 		{
 			continue;
 		}
@@ -323,7 +323,7 @@ void FindTextureElementPosition::draw()
 	{
 		if (m_targetTexture->lines[i].startElement->isShow&&m_targetTexture->lines[i].endElement->isShow)
 		{
-			if (m_targetTexture->lines[i].startElement->n[2] > 0 || m_targetTexture->lines[i].endElement->n[2] > 0)
+			if (m_targetTexture->lines[i].startElement->n[2] < 0 || m_targetTexture->lines[i].endElement->n[2] < 0)
 			{
 				continue;
 			}/*

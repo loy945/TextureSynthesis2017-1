@@ -15,7 +15,7 @@
 //======================================================================
 #include "stdafx.h"
 #include"CBMPLoader.h"              /**< 包含头文件 */
-
+#include "config.h"
 /** 构造函数 */
 CBMPLoader::CBMPLoader()
 {
@@ -127,10 +127,19 @@ bool CBMPLoader::Load(const char* fileName)
     /** 创建纹理对象 */
     glBindTexture(GL_TEXTURE_2D, ID);
 	
-
+	float color1[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	float color2[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 	/** 控制滤波 */
-	float color[4] = { 1.0f, 1.0f,1.0f, 1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color);
+	if (texturesampleIndex == 1)
+	{
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color1);
+	}
+	else
+	{
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, color2);
+	}
+	
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);

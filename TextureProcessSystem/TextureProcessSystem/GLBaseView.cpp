@@ -136,6 +136,7 @@ void CGLBaseView::OnDraw(CDC* pDC)
  	glDepthFunc(GL_LESS);// 使用深度
  	glViewport(0, 0, w, h);  //设置视口
  	glLoadIdentity();
+	//gluPerspective(45.0f, (GLfloat)w / (GLfloat)h, 0.1f, 100.0f);
 // 	// 	//gluLookAt(0, 0, -10, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 // 	// 	GLfloat light_ambient[] = { 0.0, 0.0, 0.0, 1.0 };
 // 	// 	GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -159,14 +160,14 @@ void CGLBaseView::OnDraw(CDC* pDC)
 	//glLineWidth(1.5f);
 	////////////////////////////////////////
 
-	//glEnable(GL_CULL_FACE);
+
 	if (!isInit)
 	{
 		LoadGLTextures();
 		isInit = true;
 
 	}
-	glCullFace(GL_BACK);	
+	
 
 
 	if (pDoc->isdrawbg)
@@ -179,6 +180,8 @@ void CGLBaseView::OnDraw(CDC* pDC)
 	}
 	else
 	{
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
 		if (isBindVertex)
 		{
 			glDeleteShader(VertexShaderID);
@@ -659,18 +662,20 @@ void CGLBaseView::OnMouseMove(UINT nFlags, CPoint point)
 BOOL CGLBaseView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO:  在此添加消息处理程序代码和/或调用默认值		texCoorGenTime	0	int
+	float zD = abs(zDelta / 120.0);
+	if (zD<0.1 || zD>2) return false;
+
 	if (zDelta > 0)//向前滚动，放大
 	{
-		scale_X = float(((zDelta / 120) + 0.1)*scale_X);
-		scale_Y = float(scale_X);
-		scale_Z = float(scale_X);
+		float x = 0.9*scale_X;
+		scale_X = x;
+		scale_Y = x;
 	}
 	else if (zDelta < 0)
 	{
-		zDelta = -zDelta;
-		scale_X = float(((zDelta / 120) - 0.1)*scale_X);
-		scale_Y = float(scale_X);
-		scale_Z = float(scale_X);
+		float x =  1.1*scale_X;
+		scale_X = x;
+		scale_Y = x;
 	}
 
 	Invalidate(FALSE);
@@ -1214,14 +1219,13 @@ void CGLBaseView::DrawScene()
  			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
  			glColor3f(0.75, 0.75, 0.75);
  			drawPLY();
-		/*	glEnable(GL_POLYGON_OFFSET_LINE);
+			glEnable(GL_POLYGON_OFFSET_LINE);
 			glPolygonOffset(-1.0f, -1.0f);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);;
 			glColor3f(0.3, 0.3, 0.3);
 			isFill = false;
 			drawPLY();
-			glDisable(GL_POLYGON_OFFSET_LINE);*/
-
+			glDisable(GL_POLYGON_OFFSET_LINE);
 
 
 		glDisable(GL_DEPTH_TEST);
@@ -1710,6 +1714,10 @@ void CGLBaseView::setupShaders()
 	FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
 
 	// read the source code from file
+	if (texturesampleIndex == 1)
+	{
+
+	}
 	vs = textFileRead("texture.vert");
 	fs = textFileRead("texture.frag");
 	// castings for calling the shader source function
