@@ -111,7 +111,7 @@ bool SampleTexture::initSampleTextureFromFile(const char * fileNameX, const char
 		if (texturesampleIndex == 1 || texturesampleIndex == 5
 			|| texturesampleIndex == 6)
 		{
-			textureIndex = rand() % (xPos.size() - 1) + 2;
+			textureIndex = rand() %10+1 ;
 		}
 		if (texturesampleIndex==3)
 		{

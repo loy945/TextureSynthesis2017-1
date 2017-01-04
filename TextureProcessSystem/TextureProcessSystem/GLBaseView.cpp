@@ -661,16 +661,22 @@ BOOL CGLBaseView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	// TODO:  在此添加消息处理程序代码和/或调用默认值		texCoorGenTime	0	int
 	if (zDelta > 0)//向前滚动，放大
 	{
-		scale_X = float(((zDelta / 120) + 0.1)*scale_X);
+		/*scale_X = float(((zDelta / 120) + 0.1)*scale_X);
 		scale_Y = float(scale_X);
-		scale_Z = float(scale_X);
+		scale_Z = float(scale_X);*/
+		scale_X = scale_X*1.1; 
+		scale_Y = scale_Y*1.1;
+
+
 	}
 	else if (zDelta < 0)
 	{
-		zDelta = -zDelta;
+		/*zDelta = -zDelta;
 		scale_X = float(((zDelta / 120) - 0.1)*scale_X);
 		scale_Y = float(scale_X);
-		scale_Z = float(scale_X);
+		scale_Z = float(scale_X);*/
+		scale_X = scale_X*0.9;
+		scale_Y = scale_Y*0.9;
 	}
 
 	Invalidate(FALSE);

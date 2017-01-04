@@ -236,7 +236,7 @@ void CTextureProcessSystemApp::SelectFace()
 {
 	CFrameWnd* pMain=(CFrameWnd*)CWinThread::m_pMainWnd;
 	CTextureProcessSystemDoc * pDoc = (CTextureProcessSystemDoc*)pMain->CFrameWnd::GetActiveDocument();
-	pDoc->userSelectingTriangleIndex = 3018;
+	//pDoc->userSelectingTriangleIndex = 3305;
 	//pDoc->markConnectedFace(0,0 ,1000);
 	/*µãÑ¡
 	pDoc->markConnectedFace(0.5,0.9659258262890683 ,10000);
