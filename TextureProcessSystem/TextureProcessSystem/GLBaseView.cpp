@@ -43,7 +43,6 @@ CGLBaseView::CGLBaseView()
 	diffuse[2] = -5.13;
 	diffuse[3] = 1;
 	runtimes = 0;
-
 }
 
 CGLBaseView::~CGLBaseView()
@@ -84,6 +83,18 @@ void CGLBaseView::OnDraw(CDC* pDC)
 			m_pDoc->get_ftep()->detectCollapse();
 		
 			runtimes--;
+			//截图
+			UpdateWindow();
+			CDC * pCDC = this->GetDC();
+			string ss;
+			stringstream sout;
+			sout << 1000 - runtimes;
+			ss = sout.str();
+			string a = "../cap/";
+			string b = ".bmp";
+			string sb = a + ss + b;
+			SC::Screen(sb.c_str(), pCDC);
+			ReleaseDC(pCDC);
 		}
 		else
 		{
@@ -102,18 +113,6 @@ void CGLBaseView::OnDraw(CDC* pDC)
 			f << "cost time:" << m << " minutes " << s << " seconds" << ms << " milliseconds" << endl;
 			f.close();
 			KillTimer(1);
-
-			UpdateWindow();
-			CDC * pCDC = this->GetDC();
-			string ss;
-			stringstream sout;
-			sout << 1000 - runtimes;
-			ss = sout.str();
-			string a = "../cap/";
-			string b = ".bmp";
-			string sb = a + ss + b;
-			SC::Screen(sb.c_str(), pCDC);
-			ReleaseDC(pCDC);
 		}
 	}
 
@@ -623,6 +622,9 @@ void CGLBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 	// TODO:  在此添加消息处理程序代码和/或调用默认值
 
 	mousepoint = point;
+	mousepoint2 = mousepoint1;
+	mousepoint1 = point;
+	
 	SetCapture();
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -829,6 +831,40 @@ BOOL CGLBaseView::PreTranslateMessage(MSG* pMsg)
 				   }
 		}
 			break;
+		case 8:
+		{
+				//退格
+				  CRect re;
+				  GetWindowRect(&re);
+				  int screenHeight = re.Height(), screenWidth = re.Width();//屏幕宽和高
+				  for (int w = 0; w < 10; w++)
+				  {
+					  FindTextureElementPosition *ftep = m_pDoc->_ftep[w];
+					  if (ftep)
+					  {
+						  for (int w = 0; w < ftep->m_targetTexture->tes.size(); w++)
+						  {
+							  bool teShow = true;
+							  if (!ftep->m_targetTexture->tes[w]->isShow) continue;
+							  int faceNum = ftep->m_targetTexture->tes[w]->face->facenum;
+							  double x, y, z, WinX, WinY, WinZ;
+							  x = ftep->m_targetTexture->tes[w]->face->corex;
+							  y = ftep->m_targetTexture->tes[w]->face->corey;
+							  z = ftep->m_targetTexture->tes[w]->face->corez;
+							  gluProject((GLdouble)x, (GLdouble)y, (GLdouble)z, modelview, projection, viewport, &WinX, &WinY, &WinZ);
+							  double maxX = max(mousepoint1.x, mousepoint2.x);
+							  double minX = min(mousepoint1.x, mousepoint2.x);
+							  double maxY = max(screenHeight - mousepoint1.y, screenHeight - mousepoint2.y);
+							  double minY = min(screenHeight - mousepoint1.y, screenHeight - mousepoint2.y);
+							  if ((WinX >= minX && WinX <= maxX) && (WinY >= minY && WinY <= maxY))
+							  {
+								  ftep->m_targetTexture->tes[w]->isShow = false;
+							  }
+						  }
+					  }
+				  }
+		}
+			break;
 		case 13:
 		{
 				   //回车键
@@ -1012,7 +1048,7 @@ void CGLBaseView::LoadGLTextures()
 	}
 	if (texturesampleIndex == 2)
 	{
-		num = 4;
+		num = 5;
 	}
 	if (texturesampleIndex == 3)
 	{

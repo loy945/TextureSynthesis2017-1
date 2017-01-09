@@ -66,9 +66,9 @@ bool Triangle::isAPointInTriangle(Point3D point)
 }
 double Triangle::getArea()
 {
-	double a=sqrt((pow((pt[0].x-pt[1].x),2)+pow((pt[0].y-pt[1].y),2)));
-	double b=sqrt((pow((pt[2].x-pt[1].x),2)+pow((pt[2].y-pt[1].y),2)));
-	double c=sqrt((pow((pt[2].x-pt[0].x),2)+pow((pt[2].y-pt[0].y),2)));
+	double a = sqrt((pow((pt[0].x - pt[1].x), 2) + pow((pt[0].y - pt[1].y), 2)) + pow((pt[0].z - pt[1].z), 2));
+	double b = sqrt((pow((pt[2].x - pt[1].x), 2) + pow((pt[2].y - pt[1].y), 2)) + pow((pt[0].z - pt[1].z), 2));
+	double c = sqrt((pow((pt[2].x - pt[0].x), 2) + pow((pt[2].y - pt[0].y), 2)) + pow((pt[0].z - pt[1].z), 2));
 	double p=(a+b+c)/2 ;
 	double s=(p*(p-a)*(p-b)*(p-c));
 

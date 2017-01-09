@@ -2193,7 +2193,7 @@ double CTextureProcessSystemDoc::getNorError(float * n1,float * n2)
 	
 
 }*/
-void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int maxNum, float radius, int textureIndex)
+double CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int maxNum, float radius, int textureIndex)
 {
 	vector<int> v; 
 	float kn = 1;
@@ -2209,7 +2209,7 @@ void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int 
 		v.clear();
 		if (!buildTexCoord(index, v, deep, maxDeep, maxNum, radius))
 		{
-			return;
+			return 999;
 		}
 		
 		area=getSelectArea(v);
@@ -2257,6 +2257,7 @@ void CTextureProcessSystemDoc::buildTexCoordByIndex(int index, int maxDeep, int 
 		f.close();
 
 	}*/
+		return strech;
 }
 bool CTextureProcessSystemDoc::buildTexCoord(int index, vector<int>&v, int &deep, int maxDeep, int maxNum, float radius)
 {

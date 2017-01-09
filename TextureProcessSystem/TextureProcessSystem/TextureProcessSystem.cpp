@@ -236,7 +236,16 @@ void CTextureProcessSystemApp::SelectFace()
 {
 	CFrameWnd* pMain=(CFrameWnd*)CWinThread::m_pMainWnd;
 	CTextureProcessSystemDoc * pDoc = (CTextureProcessSystemDoc*)pMain->CFrameWnd::GetActiveDocument();
-	//pDoc->userSelectingTriangleIndex = 3305;
+	if (pDoc->selectfaceLsit.size() == 0)
+	{
+		pDoc->userSelectingTriangleIndex = 3410;
+	}
+	else
+	{
+		pDoc->userSelectingTriangleIndex = pDoc->selectfaceLsit[0].facenum;
+	}
+
+	//pDoc->userSelectingTriangleIndex = 2641;
 	//pDoc->markConnectedFace(0,0 ,1000);
 	/*µãÑ¡
 	pDoc->markConnectedFace(0.5,0.9659258262890683 ,10000);
@@ -306,6 +315,7 @@ void CTextureProcessSystemApp::Check()
 	DWORD m, s, ms;
 	TimeStart = GetTickCount();
 	FindTextureElementPosition * ftep;
+	double minStrech = 999, maxStrech = 0;
 	for (int w = 0; w < 10; w++)
 	{
 		ftep = pDoc->_ftep[w];
@@ -340,7 +350,9 @@ void CTextureProcessSystemApp::Check()
 					pDoc->tempTextureElementPos[j] = ftep->m_targetTexture->tes[i]->pos[j];
 					pDoc->tempTextureElementNormal[j] = ftep->m_targetTexture->tes[i]->n[j];
 				}
-				pDoc->buildTexCoordByIndex(faceNum, 0, 50, 0.008, textureIndex);
+				double strech=pDoc->buildTexCoordByIndex(faceNum, 0, 50, 0.008, textureIndex);
+				minStrech = minStrech < strech ? minStrech : strech;
+				maxStrech = maxStrech > strech ? maxStrech : strech;
 				for (int j = 0; j < 3; j++)
 				{
 					delete tri[j];
@@ -353,6 +365,10 @@ void CTextureProcessSystemApp::Check()
 			break;
 		}
 	}
+	CString s1;
+	s1.Format("minStrech:  %f, maxStrech: %f", minStrech, maxStrech);
+	lastCount = pDoc->count;
+	AfxMessageBox(s1);
 	f.close();
 	TimeEnd = GetTickCount();
 	TimeUsed = TimeEnd - TimeStart;

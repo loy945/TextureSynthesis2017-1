@@ -38,10 +38,17 @@ double LocalParameterization::localParaByProject(Model_PLY * ply, vector<int> fa
 	vector<float> addVy;
 	vector<float> addUz;
 	vector<float> addVz;
-	//
+	//网格上三角面片面积和
+	double triSumArea_Mesh = 0;
+	//平面上三角面片面积和
+	double triSumArea_UV = 0;
 	//对每一个面分开求
 	for (int i = 0; i < faceIndexs.size();i++)
 	{
+		//网格上三角面片面积
+		double triArea_Mesh = 0;
+		//平面上三角面片面积
+		double triArea_UV = 0;
 		gl_face * f = &(ply->faceArry.at(faceIndexs[i]));
 		//把f的三个顶点 依次带入
 		float res[3][2];
@@ -55,6 +62,27 @@ double LocalParameterization::localParaByProject(Model_PLY * ply, vector<int> fa
 			res[k][0] = res[k][0] / scale + 0.5;
 			res[k][1] = res[k][1] / scale + 0.5;
 		}
+		//计算三角面片在空间中和平面中分别的面积
+		Point3D pt_UV[3];
+		for (int i2 = 0; i2 < 3; i2++)
+		{
+			pt_UV[i2].x = res[i2][0];
+			pt_UV[i2].y = res[i2][1];
+			pt_UV[i2].z = res[i2][2];
+		}
+	/*	Triangle * tri1 = new Triangle();
+		tri1->setValue(pt_UV);
+		Point3D pt_Mesh[3];
+		for (int i2 = 0; i2 < 3; i2++)
+		{
+			pt_Mesh[i2].x = res[i2][0];
+			pt_Mesh[i2].y = res[i2][1];
+			pt_Mesh[i2].z = res[i2][2];
+		}
+		Triangle * tri1 = new Triangle();
+		tri1->setValue(pt_Mesh);
+		triArea_Mesh= 未完待续
+		triArea_UV*/
 		bool isTexCoorAddIn = false;//3个顶点任一在（0，0）-（1，1）中
 
 		for (int k = 0; k < 3; k++)
@@ -102,9 +130,12 @@ double LocalParameterization::localParaByProject(Model_PLY * ply, vector<int> fa
 			addVy.push_back(res[1][1]);
 			addUz.push_back(res[2][0]);
 			addVz.push_back(res[2][1]);
+			
+			
 		}		
 	}
-
+	//计算strech
+	double strech = 0;
 	//检测法线
 	bool render = true;
 	float nIndex[3];
@@ -126,11 +157,6 @@ double LocalParameterization::localParaByProject(Model_PLY * ply, vector<int> fa
 			ni[i] = f->n[i];
 			a[i] += f->n[i];
 		}		
-// 		//d = pow((nIndex[0] - ni[0]), 2) + pow((nIndex[1] - ni[1]), 2) + pow((nIndex[2] - ni[2]), 2);
-// 		if (d>s)
-// 		{
-// 			s = d;
-// 		}
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -191,6 +217,7 @@ double LocalParameterization::localParaByProject(Model_PLY * ply, vector<int> fa
 	
 
 	file.close();
+	
 	return 0;
 }
 double LocalParameterization::localPara(Model_PLY * ply, vector<int> faceIndexs, int indexCenter, Point3D * offset, float scale)

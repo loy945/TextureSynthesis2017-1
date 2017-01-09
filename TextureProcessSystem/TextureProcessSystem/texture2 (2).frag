@@ -92,7 +92,7 @@ void main() {
 			}
 		}
 		vec4 color=texture2D(texs[j], texCoordVS[i]);
-		if((color[0]<0.1)&&(color[1]<0.1)&&(color[2]<0.1)&&(i!=0))
+		if((color[0]>0.3)&&(color[1]>0.35)&&(color[2]>0.3)&&(i!=0))
 		{
 			//colorOut=color*0.9;
 			//colorOut-=vec4(0.3,0.3,0.3,0);

@@ -99,7 +99,7 @@ public:
 	float tempTextureElementPos[3];
 	float tempTextureElementNormal[3];
 	void calVertex2D(float pos[3],int index);//计算第index个三角形上点pos，投影后的坐标
-	void buildTexCoordByIndex(int index, int maxDeep, int maxNum, float radius,int textureIndex);
+	double buildTexCoordByIndex(int index, int maxDeep, int maxNum, float radius,int textureIndex);
 	bool buildTexCoord(int index, vector<int>&v, int &deep, int maxDeep, int maxNum, float radius);
 	double getSelectArea(vector<int>&v);
 	//20150906

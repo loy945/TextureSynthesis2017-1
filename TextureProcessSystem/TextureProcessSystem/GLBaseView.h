@@ -68,7 +68,6 @@ public:
 	char *texCor[6];
 	DWORD TimeStart, TimeEnd, TimeUsed;
 	int runtimes;
-	
 public:
 	//缩放变量
 	float scale_X;
@@ -87,7 +86,8 @@ public:
 
 	//鼠标当前点击点
 	CPoint mousepoint;
-
+	CPoint mousepoint1;
+	CPoint mousepoint2;
 	//键盘按键 G 网格显示 P 点画模式 F填充模式
 	char keyBoard;
 
